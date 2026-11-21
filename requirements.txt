@@ -1,0 +1,17 @@
+# Running the app (local or Vercel). For training, install requirements-train.txt instead.
+blinker==1.9.0
+click==8.5.0
+Flask==3.1.3
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.4
+numpy==2.5.3
+pandas==3.0.6
+python-dateutil==2.9.0.post0
+requests==2.34.2
+scipy==1.18.1  # needed by xgboost
+six==1.17.0
+tzdata==2026.5
+Werkzeug==3.1.9
+xgboost-cpu==3.4.1; sys_platform != "darwin"  # CPU-only build, much smaller (no macOS wheel)
+xgboost==3.4.1; sys_platform == "darwin"

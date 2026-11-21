@@ -1,0 +1,90 @@
+/* Clearway — tokens and base styles */
+
+:root {
+  --font: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Manrope', 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+
+  /* Night sky and cloud neutrals */
+  --navy: #0A1324;
+  --navy-2: #121E36;
+  --navy-line: rgba(255, 255, 255, 0.09);
+  --ink: #0F172A;
+  --slate: #475569;
+  --slate-2: #64748B;
+  --mist-text: #94A3B8;
+  --line: #DCE3EC;
+  --line-soft: #E9EEF4;
+  --cloud: #F3F6FA;
+  --white: #FFFFFF;
+
+  /* Runway blue to clear sky */
+  --brand: #3B5BFD;
+  --brand-hover: #2C49E6;
+  --brand-soft: #EDF0FF;
+  --brand-light: #8EA2FF;
+  --grad-brand: linear-gradient(90deg, #3B5BFD 0%, #0891B2 100%);
+  --grad-brand-dark: linear-gradient(90deg, #7B91FF 0%, #5EE3FF 100%);
+  --grad-warm: linear-gradient(90deg, #F59E0B 0%, #F25C54 100%);
+
+  /* Risk, always paired with a word */
+  --low: #047857;
+  --low-soft: #E7F6EF;
+  --low-dark: #34D399;
+  --moderate: #A16207;
+  --moderate-soft: #FEF6DC;
+  --elevated: #C2410C;
+  --elevated-soft: #FFF1E8;
+  --elevated-dark: #FDBA74;
+  --danger: #DC2626;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-sm: 12px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --wrap: 1040px;
+  --wrap-wide: 1200px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button, input { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; background: none; border: 0; }
+
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 8px; }
+
+kbd {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
