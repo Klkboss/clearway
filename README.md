@@ -2,6 +2,8 @@
 
 **Departure delay risk, before you fly.**
 
+**Live demo: [clearway-mu-blue.vercel.app](https://clearway-mu-blue.vercel.app)**
+
 ![Clearway overview page](docs/images/overview.png)
 
 A machine learning web application that scores the risk of a significant airline departure delay from the flight schedule and the live weather forecast, using an XGBoost model trained on 11.5 million U.S. flights, a Flask REST API, and a React frontend.
