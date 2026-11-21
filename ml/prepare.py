@@ -1,6 +1,8 @@
 """Clean BTS monthly files into ml/data/flights.parquet.
 
-Usage: python ml/prepare.py [file pattern, default '20*_*.zip']
+Usage: python ml/prepare.py [file pattern, default '20*_*.*']
+Each month is the BTS download (YYYY_M.zip) or the same table saved as YYYY_M.parquet,
+which is about half the size.
 Splits: train = all of 2025, valid = Jan-Feb 2026 (early stopping, threshold),
         test = Mar-Aug 2026 (never seen in training, newest data).
 """
@@ -24,16 +26,19 @@ def split_of(year, month):
 
 
 def read_month(path):
-    with zipfile.ZipFile(path) as z:
-        name = next(n for n in z.namelist() if n.endswith('.csv'))
-        with z.open(name) as f:
-            df = pd.read_csv(f, usecols=COLS)
+    if str(path).endswith('.parquet'):
+        df = pd.read_parquet(path, columns=COLS)
+    else:
+        with zipfile.ZipFile(path) as z:
+            name = next(n for n in z.namelist() if n.endswith('.csv'))
+            with z.open(name) as f:
+                df = pd.read_csv(f, usecols=COLS)
     raw = len(df)
     # Same cleaning as the original project: drop missing departure delay, duplicates, cancellations.
     df = df.dropna(subset=['DepDelay']).drop_duplicates()
     df = df[df['Cancelled'] == 0].dropna(subset=['CRSElapsedTime', 'Distance'])
     out = pd.DataFrame({
-        'flight_date': pd.to_datetime(df['FlightDate']),
+        'flight_date': pd.to_datetime(df['FlightDate']).astype('datetime64[us]'),  # same type from CSV or Parquet
         'carrier': df['Reporting_Airline'].astype(str),
         'origin': df['Origin'].astype(str),
         'dest': df['Dest'].astype(str),
@@ -49,7 +54,7 @@ def read_month(path):
 def main(pattern):
     frames = []
     for path in sorted(glob.glob(str(DATA / 'raw' / pattern))):
-        year, month = map(int, re.search(r'(\d{4})_(\d+)\.zip$', path).groups())
+        year, month = map(int, re.search(r'(\d{4})_(\d+)\.(?:zip|parquet)$', path).groups())
         df, raw = read_month(path)
         df['split'] = split_of(year, month)
         frames.append(df)
@@ -57,10 +62,10 @@ def main(pattern):
     flights = pd.concat(frames, ignore_index=True)
     for col in ['carrier', 'origin', 'dest', 'split']:
         flights[col] = flights[col].astype('category')
-    flights.to_parquet(DATA / 'flights.parquet', index=False)
+    flights.to_parquet(DATA / 'flights.parquet', index=False, compression='zstd')
     print(f'saved {len(flights):,} flights')
     print(flights.groupby('split', observed=True)['delayed'].agg(['size', 'mean']))
 
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else '20*_*.zip')
+    main(sys.argv[1] if len(sys.argv) > 1 else '20*_*.*')

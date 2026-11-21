@@ -253,7 +253,7 @@ Keep both servers running while using the application.
 
 Training needs about 4 GB of downloads and 16 GB of RAM; an NVIDIA GPU makes it take minutes. Install `requirements-train.txt` (in place of `requirements.txt`): it has the CUDA build of XGBoost, Parquet support and scikit-learn.
 
-1. Download the BTS "Reporting Carrier On-Time Performance" monthly zips (January 2025 to August 2026) into `ml/data/raw/`, named `YYYY_M.zip`.
+1. Download the BTS "Reporting Carrier On-Time Performance" monthly zips (January 2025 to August 2026) into `ml/data/raw/`, named `YYYY_M.zip`. A month can also be stored as `YYYY_M.parquet` (the same table, about half the size); `prepare.py` reads either.
 2. Build the flight table: `python ml/prepare.py`
 3. Fetch hourly weather for the busiest airports (about an hour, because of the free API's rate limit): `python ml/fetch_weather.py`
 4. Train and evaluate: `python ml/train.py`. This writes `models/v2_model.ubj.gz` (the trees, in XGBoost's own format), `models/v2_meta.json` (categories, traffic tables, threshold) and `models/v2_metrics.json`.
