@@ -39,8 +39,6 @@ frontend/dist/
 ml/data/
 backups/
 
-# Vercel build output (the frontend, built into public/ at deploy time)
-public/
 .vercel/
 
 # Local planning notes

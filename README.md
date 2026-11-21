@@ -264,8 +264,10 @@ Run the Python tests with `python -m unittest test_features`.
 The repository deploys as one Vercel project: the React site is served from Vercel's CDN and `app.py` runs as a Python function on the same domain, so `/predict` needs no extra setup. No API keys are needed.
 
 1. Push the repository to GitHub, with `models/` included (about 10 MB).
-2. In Vercel, choose **Add New → Project**, import the repository and keep the detected settings. `vercel.json` builds the frontend into `public/` and keeps the training code and data out of the Python function.
+2. In Vercel, choose **Add New → Project**, import the repository, and choose **Import single project** for the Flask app at `/` (not the multi-service option). `vercel.json` keeps the training code and data out of the Python function.
 3. Deploy. Every push to the main branch redeploys; other branches get preview links.
+
+The website is committed prebuilt in `public/`, because Vercel's Flask setup serves `public/` as it is in the repository and ignores files a build step creates there. After changing the frontend, run `npm run build:site` in `frontend/` and commit `public/` with the change.
 
 Check the deployment at `https://<your-project>.vercel.app/api/health`. The free Hobby plan is for personal, non-commercial use.
 
@@ -342,7 +344,8 @@ clearway/
 │   └── train.py                # GPU training, threshold choice, evaluation vs v1
 ├── requirements.txt            # to run the app (CPU XGBoost)
 ├── requirements-train.txt      # to train (GPU XGBoost, Parquet, scikit-learn)
-├── vercel.json                 # Vercel build and function settings
+├── vercel.json                 # Vercel function settings
+├── public/                     # built website served by Vercel (npm run build:site)
 ├── test_api.py
 ├── README.md
 └── frontend/

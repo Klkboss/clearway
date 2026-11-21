@@ -1,9 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd frontend && npm ci && npx vite build --outDir ../public --emptyOutDir",
   "functions": {
     "app.py": {
-      "excludeFiles": "{frontend/**,public/**,ml/**,docs/**,backups/**,test_*.py,*.pkl,models/*.pkl,models/v2_metrics.json,models/v2_forecast_eval.json,requirements-train.txt}"
+      "excludeFiles": "{frontend/**,ml/**,docs/**,backups/**,test_*.py,*.pkl,models/*.pkl,models/v2_metrics.json,models/v2_forecast_eval.json,requirements-train.txt}"
     }
   }
 }
